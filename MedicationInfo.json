@@ -1,0 +1,48 @@
+{
+
+    "version": 0.1,
+
+    "holidays":
+    [
+        {
+            "startdate": ""
+        }
+    ],
+
+    "users":
+    [
+        {
+            "name": "Lachie",
+            "alarms":
+            [
+                {
+                    "label": "Morning",
+                    "light-on": "07:20",
+                    "grace-period": 5
+                },
+
+                {
+                    "label": "Night",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ],
+
+            "alarms-h":
+            [
+                {
+                    "label": "Morning",
+                    "light-on": "09:20",
+                    "grace-period": 5
+                },
+
+                {
+                    "label": "Night",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ]
+        }
+    ]
+
+}
