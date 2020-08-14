@@ -1,26 +1,39 @@
+#!/usr/bin/env python3
 from datetime import datetime, timedelta, time #Timestamps
 import subprocess
 import json
+from time import sleep
 
-#Load alarm configuration
-userconfig = json.load(open("MedicationInfo.json", "r"))
+class LightBoxHost:
+    """
+        The root of the program, responsible for cycling the instance of ReminderHost at the start of every day
+    """
 
-remHost = None
+    def __init__(self):
 
-while True:
-    now = datetime.now() #Get current time and date
+        #Load alarm configuration
+        #lightBoxConfig = json.load(open("MedicationInfo.json", "r"))
 
-    #Launch reminderhost.py
-    remHost = subprocess.Popen("reminderhost.py")
+        remHost = None
 
-    #Calculate seconds until next day
-    tomorrow = now + datetime.timedelta(days=1)
-    countdown = int(datetime.datetime.combine(tomorrow, datetime.time.min) - now)
+        while True:
 
-    #Wait until next day
-    time.sleep(countdown+1)
+            now = datetime.now() #Get current time and date
 
-    #Kill reminderhost so we can reopen it
-    remHost.kill()
+            #Launch reminderhost.py
+            remHost = subprocess.Popen("py ReminderHost.py")
 
+            #Calculate seconds until next day
+            tomorrow = now + timedelta(days=1)
+            countdown = (datetime.combine(tomorrow, time.min) - now)
+
+            print("Time until next day: " + countdown.total_seconds() + "s")
+
+            #Wait until next day
+            sleep(countdown.total_seconds())
+
+            #Kill reminderhost so we can reopen it
+            remHost.kill()
+
+current = LightBoxHost()
     

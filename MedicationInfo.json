@@ -2,12 +2,19 @@
 
     "version": 0.1,
 
-    "holidays":
+    "holiday-seasons":
+    [
+    
+    ],
+
+    "public-holidays":
     [
         {
-            "startdate": ""
+            "name": "Christmas Day",
+            "date": "25/12"
         }
     ],
+
 
     "users":
     [
@@ -16,13 +23,19 @@
             "alarms":
             [
                 {
-                    "label": "Morning",
+                    "label": "Morning-L",
+                    "light-on": "15:09",
+                    "grace-period": 5
+                },
+
+                {
+                    "label": "Morning-L",
                     "light-on": "07:20",
                     "grace-period": 5
                 },
 
                 {
-                    "label": "Night",
+                    "label": "Night-L",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -31,13 +44,13 @@
             "alarms-h":
             [
                 {
-                    "label": "Morning",
+                    "label": "H-Morning-L",
                     "light-on": "09:20",
                     "grace-period": 5
                 },
 
                 {
-                    "label": "Night",
+                    "label": "H-Night-L",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
