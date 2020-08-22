@@ -19,15 +19,49 @@
     "users":
     [
         {
-            "name": "Lachie",
+            "name": "Ben",
             "alarms":
             [
                 {
-                    "label": "Morning-L",
-                    "light-on": "15:09",
+                    "label": "Morning-B",
+                    "light-on": "07:20",
                     "grace-period": 5
                 },
 
+                {
+                    "label": "Night-B",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ],
+
+            "alarms-h":
+            [
+                {
+                    "label": "H-Morning-B",
+                    "light-on": "09:20",
+                    "grace-period": 5
+                },
+
+                {
+                    "label": "H-Night-B",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ],
+
+            "pins":
+            {
+                "button": 4,
+                "led": 18
+            }
+
+        },
+
+        {
+            "name": "Lachie",
+            "alarms":
+            [
                 {
                     "label": "Morning-L",
                     "light-on": "07:20",
@@ -54,7 +88,40 @@
                     "light-on": "19:20",
                     "grace-period": 5
                 }
-            ]
+            ],
+
+            "pins":
+            {
+                "button": 17,
+                "led": 23
+            }
+        },
+
+        {
+            "name": "Annie",
+            "alarms":
+            [
+                {
+                    "label": "Night-A",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ],
+
+            "alarms-h":
+            [
+                {
+                    "label": "H-Night-A",
+                    "light-on": "19:20",
+                    "grace-period": 5
+                }
+            ],
+
+            "pins":
+            {
+                "button": 27,
+                "led": 24
+            }
         }
     ]
 

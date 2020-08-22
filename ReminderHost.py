@@ -2,7 +2,6 @@
 from datetime import datetime, timedelta, time #Timestamps
 import subprocess
 import json
-from Reminder import Reminder
 from operator import attrgetter
 from time import sleep
 
@@ -16,6 +15,7 @@ class ReminderHost:
 
     lightBoxConfig = None
     todaysReminders = []
+    reminderProcesses = []
 
     def __init__(self):
 
@@ -30,9 +30,22 @@ class ReminderHost:
             #If so use holiday settings
             reminderCollection = "alarms-h"
 
-        #Loop through users and cache all alarms for today
-        for user in lightBoxConfig["users"]:
-            for reminder in user[reminderCollection]:
+        #Get all users
+        users = lightBoxConfig["users"]
+
+        #Loop through users by index
+        for i in range(len(users)):
+            
+            #Add entry for user's current active reminder handle
+            self.reminderProcesses.append(None)
+
+            #Add each reminder to the list of reminders for today
+            for reminder in users[i][reminderCollection]:
+                
+                #Mark reminder with user index for later reference
+                reminder["user-id"] = i
+
+                #Add to the list of reminders for today
                 self.todaysReminders.append(reminder)
         
         #Sort by time
@@ -52,11 +65,21 @@ class ReminderHost:
                 #Calculate time until next reminder
                 nextReminderCountdown = (datetime.strptime(f'{now.strftime("%d/%m/%Y")} {reminder["light-on"]}', "%d/%m/%Y %H:%M") - now)
 
-                print(f'Next reminder ({reminder["label"]}) in {nextReminderCountdown.total_seconds()}s')
-
+                #Log
+                print(f'Next reminder ({reminder["label"]}) from user: \"{reminder["user-id"]}\" in {nextReminderCountdown.total_seconds()}s')
+                
+                #Sleep until such a time
                 sleep(nextReminderCountdown.total_seconds())
 
-                print('TODO: REMINDER SCRIPT')
+                #Get process handle for user
+                existingHandle  = self.reminderProcesses[reminder["user-id"]]
+
+                #If the user has a reminder still active, kill it and set to None
+                if existingHandle != None:
+                    existingHandle.kill()
+                    
+                #Run the reminder and cache the process handle
+                #self.reminderProcesses[reminder["user-id"]] = subprocess.Popen(["py", "Reminder.py", f"\"{reminder}\""])
 
             
 
@@ -89,4 +112,4 @@ class ReminderHost:
 
         return isHoliday
 
-testhost = ReminderHost()
+remHost = ReminderHost()
