@@ -24,7 +24,7 @@ class LightBoxHost:
             now = datetime.now() #Get current time and date
 
             #Launch reminderhost.py
-            remHost = subprocess.Popen("python3 ReminderHost.py")
+            remHost = subprocess.Popen(["python3", "ReminderHost.py"])
 
             #Calculate seconds until next day
             tomorrow = now + timedelta(days=1)
