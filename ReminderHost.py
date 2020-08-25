@@ -2,25 +2,35 @@
 from datetime import datetime, timedelta, time #Timestamps
 import subprocess
 import json
-from Reminder import Reminder
+from gpiozero import LEDBoard
 from operator import attrgetter
 from time import sleep
+import sys
 
 class ReminderHost:
     #Summary
     """
         This class manages all the reminders that go off in a day.
         The class is instantiated as a subprocess by lightboxhost.py once per day,
-        and is replaced at the end of the day by a new instance.
+        and is replaced at the end of the day by a new instance. (Courtesy of LightBoxHost.py)
     """
 
     lightBoxConfig = None
     todaysReminders = []
+    reminderProcesses = []
 
-    def __init__(self):
+    def __init__(self, lightBoxConfig):
 
-        #Load alarm configuration
-        lightBoxConfig = json.load(open('MedicationInfo.json', "r"))
+        #Get list of all the user's leds
+        ledpins = []
+        for user in lightBoxConfig["users"]:
+            ledpins.append(user["pins"]["led"])
+        
+        #Assemble LEDBoard from all led pins
+        leds = LEDBoard(*ledpins)
+
+        #Turn on all the leds for the duration of the init phase
+        leds.blink(1, 1, 0, 0, 1)
 
         #Which reminder settings do we use (holiday or normal)
         reminderCollection = "alarms"
@@ -30,9 +40,22 @@ class ReminderHost:
             #If so use holiday settings
             reminderCollection = "alarms-h"
 
-        #Loop through users and cache all alarms for today
-        for user in lightBoxConfig["users"]:
-            for reminder in user[reminderCollection]:
+        #Get all users
+        users = lightBoxConfig["users"]
+
+        #Loop through users by index
+        for i in range(len(users)):
+            
+            #Add entry for user's current active reminder handle
+            self.reminderProcesses.append(None)
+
+            #Add each reminder to the list of reminders for today
+            for reminder in users[i][reminderCollection]:
+                
+                #Mark reminder with user index for later reference
+                reminder["user-id"] = i
+
+                #Add to the list of reminders for today
                 self.todaysReminders.append(reminder)
         
         #Sort by time
@@ -52,11 +75,21 @@ class ReminderHost:
                 #Calculate time until next reminder
                 nextReminderCountdown = (datetime.strptime(f'{now.strftime("%d/%m/%Y")} {reminder["light-on"]}', "%d/%m/%Y %H:%M") - now)
 
-                print(f'Next reminder ({reminder["label"]}) in {nextReminderCountdown.total_seconds()}s')
-
+                #Log
+                print(f'Next reminder ({reminder["label"]}) from user: \"{reminder["user-id"]}\" in {nextReminderCountdown.total_seconds()}s')
+                
+                #Sleep until such a time
                 sleep(nextReminderCountdown.total_seconds())
 
-                print('TODO: REMINDER SCRIPT')
+                #Get process handle for user
+                existingHandle  = self.reminderProcesses[reminder["user-id"]]
+
+                #If the user has a reminder still active, kill it and set to None
+                if existingHandle != None:
+                    existingHandle.kill()
+                    
+                #Run the reminder and cache the process handle
+                self.reminderProcesses[reminder["user-id"]] = subprocess.Popen(["python3", "Reminder.py", json.dumps(reminder)])
 
             
 
@@ -84,9 +117,16 @@ class ReminderHost:
             endDate = datetime.strptime(str(holiday["start-date"]), "%d/%m")
 
             #If the date is between the start and end of a holiday
-            if startDate < now < endDate:
+            if startDate <= now <= endDate:
                 isHoliday = True
 
         return isHoliday
 
-testhost = ReminderHost()
+#Init with command line arg validation
+if len(sys.argv) == 2:
+    jsonData = json.loads(sys.argv[1])
+    #load args into constructor   
+    reminderHost = ReminderHost(jsonData)
+
+else:
+    print("ReminderHost.py: Invalid arg count")
