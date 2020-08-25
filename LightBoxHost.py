@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, time #Timestamps
 import subprocess
 import json
+from gpiozero import LEDBoard
 from time import sleep
 
 class LightBoxHost:
@@ -16,15 +17,12 @@ class LightBoxHost:
 
         remHost = None
 
-        #Blink all LEDS at once so we know that they all work
-        numButtons = len(config['users'])
-
         while True:
 
             now = datetime.now() #Get current time and date
 
             #Launch reminderhost.py
-            remHost = subprocess.Popen(["python3", "ReminderHost.py"])
+            remHost = subprocess.Popen(["python3", "ReminderHost.py", json.dumps(config)])
 
             #Calculate seconds until next day
             tomorrow = now + timedelta(days=1)

@@ -4,5 +4,7 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.pythonPath": "C:\\Program Files (x86)\\Python38-32\\python.exe"
+	}
 }

@@ -2,25 +2,35 @@
 from datetime import datetime, timedelta, time #Timestamps
 import subprocess
 import json
+from gpiozero import LEDBoard
 from operator import attrgetter
 from time import sleep
+import sys
 
 class ReminderHost:
     #Summary
     """
         This class manages all the reminders that go off in a day.
         The class is instantiated as a subprocess by lightboxhost.py once per day,
-        and is replaced at the end of the day by a new instance.
+        and is replaced at the end of the day by a new instance. (Courtesy of LightBoxHost.py)
     """
 
     lightBoxConfig = None
     todaysReminders = []
     reminderProcesses = []
 
-    def __init__(self):
+    def __init__(self, lightBoxConfig):
 
-        #Load alarm configuration
-        lightBoxConfig = json.load(open('MedicationInfo.json', "r"))
+        #Get list of all the user's leds
+        ledpins = []
+        for user in lightBoxConfig["users"]:
+            ledpins.append(user["pins"]["led"])
+        
+        #Assemble LEDBoard from all led pins
+        leds = LEDBoard(*ledpins)
+
+        #Turn on all the leds for the duration of the init phase
+        leds.blink(1, 1, 0, 0, 1)
 
         #Which reminder settings do we use (holiday or normal)
         reminderCollection = "alarms"
@@ -79,7 +89,7 @@ class ReminderHost:
                     existingHandle.kill()
                     
                 #Run the reminder and cache the process handle
-                #self.reminderProcesses[reminder["user-id"]] = subprocess.Popen(["py", "Reminder.py", f"\"{reminder}\""])
+                self.reminderProcesses[reminder["user-id"]] = subprocess.Popen(["python3", "Reminder.py", json.dumps(reminder)])
 
             
 
@@ -107,9 +117,16 @@ class ReminderHost:
             endDate = datetime.strptime(str(holiday["start-date"]), "%d/%m")
 
             #If the date is between the start and end of a holiday
-            if startDate < now < endDate:
+            if startDate <= now <= endDate:
                 isHoliday = True
 
         return isHoliday
 
-remHost = ReminderHost()
+#Init with command line arg validation
+if len(sys.argv) == 2:
+    jsonData = json.loads(sys.argv[1])
+    #load args into constructor   
+    reminderHost = ReminderHost(jsonData)
+
+else:
+    print("ReminderHost.py: Invalid arg count")
