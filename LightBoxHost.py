@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-from datetime import datetime, timedelta, time #Timestamps
-import subprocess
-import json
-from gpiozero import LEDBoard
-from time import sleep
+from datetime import datetime, timedelta, time      #Timestamps
+from multiprocessing import Process, log_to_stderr  #Multiprocessing functions for handling ReminderHost
+import json                                         #Json Serialisation
+import logging                                      #Error routing
+import ReminderHost                                 #ReminderHost class               
+from time import sleep                              #Thread blocking
+import atexit
+import sys
 
 class LightBoxHost:
     """
@@ -11,6 +14,8 @@ class LightBoxHost:
     """
 
     def __init__(self):
+
+        log_to_stderr(logging.CRITICAL)
 
         #Load reminder configuration
         config = json.load(open("MedicationInfo.json", "r"))
@@ -21,14 +26,16 @@ class LightBoxHost:
 
             now = datetime.now() #Get current time and date
 
-            #Launch reminderhost.py
-            remHost = subprocess.Popen(["python3", "ReminderHost.py", json.dumps(config)])
+            #Launch ReminderHost
+            remHost = Process(name="ReminderHost", target=ReminderHost.ReminderHost, args=(config,))
+            remHost.start()
+            sys.stdin.flush()
 
             #Calculate seconds until next day
             tomorrow = now + timedelta(days=1)
             countdown = (datetime.combine(tomorrow, time.min) - now)
 
-            print("Time until next day: " + str(countdown.total_seconds()) + "s")
+            print("LightBoxHost: Time until next day: " + str(countdown.total_seconds()) + "s")
 
             #Wait until next day
             sleep(countdown.total_seconds())
