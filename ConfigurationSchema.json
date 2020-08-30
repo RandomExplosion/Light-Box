@@ -9,6 +9,17 @@
         "users"
     ],
     "properties": {
+        "tts-lan": {
+            "$id": "#/properties/users/items/anyOf/0/properties/tts-lan",
+            "type": "string",
+            "title": "TTS Language",
+            "description": "The langage used by the TTS Library",
+            "default": "",
+            "examples": [
+                "en-us",
+                "en-au"
+            ]
+        },
         "holiday-seasons": {
             "$id": "#/properties/holiday-seasons",
             "type": "array",
@@ -158,11 +169,13 @@
                         "alarms": [
                             {
                                 "label": "Morning-B",
+                                "vocal-reminder": "Ben, Morning Tablet",
                                 "light-on": "07:20",
                                 "grace-period": 5
                             },
                             {
                                 "label": "Night-B",
+                                "vocal-reminder": "Ben, Night Tablet",
                                 "light-on": "19:20",
                                 "grace-period": 5
                             }
@@ -170,11 +183,13 @@
                         "alarms-h": [
                             {
                                 "label": "H-Morning-B",
+                                "vocal-reminder": "Ben, Morning Tablet",
                                 "light-on": "09:20",
                                 "grace-period": 5
                             },
                             {
                                 "label": "H-Night-B",
+                                "vocal-reminder": "Ben, Night Tablet",
                                 "light-on": "19:20",
                                 "grace-period": 5
                             }
@@ -189,11 +204,13 @@
                         "alarms": [
                             {
                                 "label": "Morning-L",
+                                "vocal-reminder": "Lachie, Morning Tablet",
                                 "light-on": "07:20",
                                 "grace-period": 5
                             },
                             {
                                 "label": "Night-L",
+                                "vocal-reminder": "Lachie, Night Tablet",
                                 "light-on": "19:20",
                                 "grace-period": 5
                             }
@@ -201,11 +218,13 @@
                         "alarms-h": [
                             {
                                 "label": "H-Morning-L",
+                                "vocal-reminder": "Lachie, Morning Tablet",
                                 "light-on": "09:20",
                                 "grace-period": 5
                             },
                             {
                                 "label": "H-Night-L",
+                                "vocal-reminder": "Lachie, Night Tablet",
                                 "light-on": "19:20",
                                 "grace-period": 5
                             }
@@ -233,11 +252,13 @@
                                 "alarms": [
                                     {
                                         "label": "Morning-B",
+                                        "vocal-reminder": "Ben, Morning Tablet",
                                         "light-on": "07:20",
                                         "grace-period": 5
                                     },
                                     {
                                         "label": "Night-B",
+                                        "vocal-reminder": "Ben, Night Tablet",
                                         "light-on": "19:20",
                                         "grace-period": 5
                                     }
@@ -245,11 +266,13 @@
                                 "alarms-h": [
                                     {
                                         "label": "H-Morning-B",
+                                        "vocal-reminder": "Ben, Morning Tablet",
                                         "light-on": "09:20",
                                         "grace-period": 5
                                     },
                                     {
                                         "label": "H-Night-B",
+                                        "vocal-reminder": "Ben, Night Tablet",
                                         "light-on": "19:20",
                                         "grace-period": 5
                                     }
@@ -287,11 +310,13 @@
                                     [
                                         {
                                             "label": "Morning-B",
+                                            "vocal-reminder": "Ben, Morning Tablet",
                                             "light-on": "07:20",
                                             "grace-period": 5
                                         },
                                         {
                                             "label": "Night-B",
+                                            "vocal-reminder": "Ben, Night Tablet",
                                             "light-on": "19:20",
                                             "grace-period": 5
                                         }
@@ -310,6 +335,7 @@
                                             "examples": [
                                                 {
                                                     "label": "Morning-B",
+                                                    "vocal-reminder": "Ben, Morning Tablet",
                                                     "light-on": "07:20",
                                                     "grace-period": 5
                                                 }
@@ -330,15 +356,22 @@
                                                         "Morning-B"
                                                     ]
                                                 },
+                                                "vocal-reminder": {
+                                                    "$id": "#/properties/users/items/anyOf/0/properties/alarms/items/anyOf/0/properties/vocal-name",
+                                                    "type": "string",
+                                                    "title": "Vocal Reminder",
+                                                    "description": "Override for the words said through tts when this reminder is active (if nothing will default to the label)",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "Ben, Morning Tablet"
+                                                    ]
+                                                },
                                                 "light-on": {
                                                     "$id": "#/properties/users/items/anyOf/0/properties/alarms/items/anyOf/0/properties/light-on",
                                                     "type": "string",
                                                     "title": "Light-On Time",
-                                                    "description": "What time the alarm should be initialised. A good time would be the earliest time you can see yourself satisfying the reminder",
-                                                    "default": "",
-                                                    "examples": [
-                                                        "07:20"
-                                                    ],
+                                                    "description": "What time the alarm should be initialised.\nA good time would be the earliest time you can see yourself satisfying the reminder\nTime should be given in format: HH:MM",
+                                                    "default": "00:00",
                                                     "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
                                                 },
                                                 "grace-period": {
@@ -396,6 +429,7 @@
                                                 }
                                             ],
                                             "required": [
+                                                "label",
                                                 "light-on",
                                                 "grace-period"
                                             ],
@@ -410,15 +444,22 @@
                                                         "H-Morning-B"
                                                     ]
                                                 },
+                                                "vocal-reminder": {
+                                                    "$id": "#/properties/users/items/anyOf/0/properties/alarms/items/anyOf/0/properties/vocal-name",
+                                                    "type": "string",
+                                                    "title": "Vocal Reminder",
+                                                    "description": "Override for the words said through tts when this reminder is active (if nothing will default to the label)",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "Ben, Morning Tablet"
+                                                    ]
+                                                },
                                                 "light-on": {
                                                     "$id": "#/properties/users/items/anyOf/0/properties/alarms-h/items/anyOf/0/properties/light-on",
                                                     "type": "string",
                                                     "title": "Light-On Time",
-                                                    "description": "What time the alarm should be initialised. A good time would be the earliest time you can see yourself satisfying the reminder",
-                                                    "default": "",
-                                                    "examples": [
-                                                        "07:20"
-                                                    ],
+                                                    "description": "What time the alarm should be initialised.\nA good time would be the earliest time you can see yourself satisfying the reminder\nTime should be given in format: HH:MM",
+                                                    "default": "00:00",
                                                     "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
                                                 },
                                                 "grace-period": {
@@ -458,8 +499,8 @@
                                     "button": {
                                         "$id": "#/properties/users/items/anyOf/0/properties/pins/properties/button",
                                         "type": "integer",
-                                        "title": "The input pin associated with the button",
-                                        "description": "An explanation about the purpose of this instance.",
+                                        "title": "Button Pin",
+                                        "description": "The input pin associated with the button (BCM notation)",
                                         "examples": [
                                             4
                                         ],
@@ -468,8 +509,8 @@
                                     "led": {
                                         "$id": "#/properties/users/items/anyOf/0/properties/pins/properties/led",
                                         "type": "integer",
-                                        "title": "The led schema",
-                                        "description": "An explanation about the purpose of this instance.",
+                                        "title": "LED Pin",
+                                        "description": "The output pin associated with the LED on the button",
                                         "examples": [
                                             18
                                         ],

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from datetime import datetime, timedelta, time      #Timestamps
-from multiprocessing import Process, log_to_stderr  #Multiprocessing functions for handling ReminderHost
-import json                                         #Json Serialisation
-import logging                                      #Error routing
-import ReminderHost                                 #ReminderHost class               
-from time import sleep                              #Thread blocking
+from datetime import datetime, timedelta, time                          #Timestamps
+from multiprocessing import Process, log_to_stderr, set_start_method    #Multiprocessing functions for handling ReminderHost
+import json                                                             #Json Serialisation
+import logging                                                          #Error routing
+import ReminderHost                                                     #ReminderHost class               
+from time import sleep                                                  #Thread blocking
 import atexit
 import sys
 
@@ -43,6 +43,4 @@ class LightBoxHost:
             #Kill reminderhost so we can reopen it
             remHost.kill()
 
-#Init
-current = LightBoxHost()
     

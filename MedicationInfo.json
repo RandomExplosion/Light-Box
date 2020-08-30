@@ -1,6 +1,7 @@
 {
     "$schema": "./ConfigurationSchema.json",
     "version": 0.1,
+    "tts-lan": "en-au",
 
     "holiday-seasons":
     [
@@ -24,12 +25,14 @@
             [
                 {
                     "label": "Morning-B",
+                    "vocal-reminder": "Ben, Morning Tablet",
                     "light-on": "07:20",
                     "grace-period": 5
                 },
 
                 {
                     "label": "Night-B",
+                    "vocal-reminder": "Ben, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -39,12 +42,14 @@
             [
                 {
                     "label": "H-Morning-B",
+                    "vocal-reminder": "Ben, Morning Tablet",
                     "light-on": "09:20",
                     "grace-period": 5
                 },
 
                 {
                     "label": "H-Night-B",
+                    "vocal-reminder": "Ben, Morning Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -64,12 +69,14 @@
             [
                 {
                     "label": "Morning-L",
+                    "vocal-reminder": "Lachie, Morning Tablet",
                     "light-on": "07:20",
                     "grace-period": 5
                 },
 
                 {
                     "label": "Night-L",
+                    "vocal-reminder": "Lachie, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -79,12 +86,14 @@
             [
                 {
                     "label": "H-Morning-L",
+                    "vocal-reminder": "Lachie, Morning Tablet",
                     "light-on": "09:20",
                     "grace-period": 5
                 },
 
                 {
                     "label": "H-Night-L",
+                    "vocal-reminder": "Lachie, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -103,6 +112,7 @@
             [
                 {
                     "label": "Night-A",
+                    "vocal-reminder": "Annie, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
@@ -112,11 +122,12 @@
             [
                 {
                     "label": "H-Night-A",
+                    "vocal-reminder": "Annie, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
                 }
             ],
-
+            
             "pins":
             {
                 "button": 27,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime, timedelta, time  #Timestamps
 #Multiprocessing
-from multiprocessing import Process, parent_process, current_process, log_to_stderr  
+from multiprocessing import Process, parent_process, current_process, log_to_stderr
 import logging                                  #For error routing
 import json                                     #Json Integration    
 from gpiozero import LEDBoard                   #Mass LED control
@@ -11,6 +11,8 @@ from sys import argv                            #CLI arguments
 import Reminder                                 #For reminder handling
 import atexit                                   #Reminder class
 from Util import printfl                        #For flushed printing
+import pyttsx3; import gtts                     #TTS
+from os import path, mkdir                      #Path and directory manipulation
 
 class ReminderHost:
     #Summary
@@ -53,6 +55,18 @@ class ReminderHost:
         #Get all users
         users = lightBoxConfig["users"]
 
+        #TTS engine
+        #engine = pyttsx3.init()
+        tts = gtts.gTTS('Hello World')
+
+        #Set language if specified
+        if "tts-lan" in lightBoxConfig:
+            tts.lang = lightBoxConfig["tts-lan"]
+
+        #Create folder for sounds if none exists
+        if not path.exists("./ReminderSounds/"):
+            mkdir("./ReminderSounds/")
+
         #Loop through users by index
         for i in range(len(users)):
             
@@ -67,9 +81,28 @@ class ReminderHost:
                 #Add Pinout information for use in Reminder.Reminder
                 reminder["pins"] = users[i]["pins"]
 
+                #Generate an mp3 to play during this reminder if there isn't one saved yet
+                if not path.exists(f'./ReminderSounds/{reminder["label"]}.mp3'):
+                    #If vocal reminder text is set in configuration
+                    if "vocal-reminder" in reminder:
+                        #Add it to the ttsx queue
+                        #engine.save_to_file(reminder["vocal-reminder"], f'./ReminderSounds/{reminder["label"]}')
+                        printfl(f'ReminderHost: Generating TTS mp3 for \"{reminder["label"]}\"')
+                        tts.text = reminder["vocal-reminder"]   #Set text
+                        tts.save(f'./ReminderSounds/{reminder["label"]}.mp3')
+                    else:
+                        #Add it to the ttsx queue
+                        #engine.save_to_file(reminder["label"], f'./ReminderSounds/{reminder["label"]}')
+                        printfl(f'ReminderHost: Generating TTS mp3 for \"{reminder["label"]}\"')
+                        tts.text = reminder["label"]   #Set text
+                        tts.save(f'./ReminderSounds/{reminder["label"]}.mp3')
+
                 #Add to the list of reminders for today
                 self.todaysReminders.append(reminder)
         
+        #Generate all the mp3s in the queue
+        #engine.runAndWait()
+
         #TODO: Launch Sound Player Script and establish link with reminderProcesses over shared memory
 
         #Sort by time

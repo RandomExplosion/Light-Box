@@ -30,16 +30,13 @@ class Reminder:
     process = None      #This process
 
     def __init__(self, data):
-        
-        #Sleep to ensure log order
-        sleep(0.5)
 
         #Atexit registration
         atexit.register(self.dismiss)
 
         #Label
-        #if hasattr(data, "label") and data["label"] != "":
-        self.label = data["label"]
+        if "label" in data and data["label"] != "":
+            self.label = data["label"]
 
         #Light on time
         try:
@@ -49,7 +46,7 @@ class Reminder:
             self.lightOn = time.min()
 
         #Grace period
-        if hasattr(data, "grace-period") and data["grace-period"] > 0:
+        if "grace-period" in data and data["grace-period"] > 0:
             self.gracePeriod = data["grace-period"]
 
         #Led and button init
@@ -60,6 +57,9 @@ class Reminder:
         self.button.when_released = self.released
         #self.button.when_held = self.when_held
 
+        #Sleep to ensure log order
+        sleep(0.5)
+        
         #Raise the reminder
         self.raiseReminder()
 
