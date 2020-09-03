@@ -5,8 +5,9 @@ import json                                                             #Json Se
 import logging                                                          #Error routing
 import ReminderHost                                                     #ReminderHost class               
 from time import sleep                                                  #Thread blocking
-import atexit
-import sys
+import atexit                                                           #Exit callback
+import sys                                                              #System utilities
+from jsonschema import validate                                         #Json Validation
 
 class LightBoxHost:
     """
@@ -16,9 +17,15 @@ class LightBoxHost:
     def __init__(self):
 
         log_to_stderr(logging.CRITICAL)
-
+        
         #Load reminder configuration
         config = json.load(open("MedicationInfo.json", "r"))
+
+        #Load schema
+        schema = json.load(open("ConfigurationSchema.json"))
+
+        #Check configuration against schema (Will error if formatted incorrectly)
+        validate(instance=config, schema=schema)
 
         remHost = None
 
@@ -43,4 +50,5 @@ class LightBoxHost:
             #Kill reminderhost so we can reopen it
             remHost.kill()
 
-    
+#INIT
+current = LightBoxHost()    

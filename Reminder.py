@@ -68,16 +68,6 @@ class Reminder:
         sleep(0.5)  #Sleep to allow for button press to be processed
         exit(0)
 
-
-    #N.Y.I
-    #def soundAlarm(self, ontime=1, offtime=1):
-        # if not(self.snoozed):
-        #     self.buzzer.on()    #Beep On
-        # sleep(ontime) 
-        # if not(self.snoozed):
-        #     self.buzzer.off()   #Beep Off
-        # sleep(offtime)
-
     def raiseReminder(self):
         printfl(f"Reminder[{self.label}]: Raising")
         self.led.blink(1, 1, 2)       #Blink Twice
@@ -95,21 +85,3 @@ class Reminder:
         self.button.close()     #Free up button pin
         self.led.close()        #Free up led pin
         return                  #Terminate Script
-
-    def snooze(self):
-        self.snoozed = True
-        printfl(f"Reminder[{self.label}]: User Snoozed for 5 minutes")
-        sleep(60*5)
-        self.snoozed = False
-
-    #Update held
-    def when_held(self, button):
-        self.buttonheld = True
-
-    #When button is released
-    def released(self, button):
-        #if not self.buttonheld:
-        #    self.snooze()   #Snooze if the button was just pressed
-        #else:
-        self.dismiss()  #Dismiss if it wasn't held
-        #self.buttonheld = False

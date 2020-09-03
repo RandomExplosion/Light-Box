@@ -2,7 +2,7 @@
     "$schema": "./ConfigurationSchema.json",
     "version": 0.1,
     "tts-lan": "en-au",
-
+    "snooze-pin": 0,
     "holiday-seasons":
     [
     

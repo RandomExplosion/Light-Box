@@ -15,7 +15,6 @@ import pyttsx3; import gtts                     #TTS
 from os import path, mkdir                      #Path and directory manipulation
 
 class ReminderHost:
-    #Summary
     """
         This class manages all the reminders that go off in a day.
         The class is instantiated as a process by lightboxhost.py once per day,
@@ -99,11 +98,6 @@ class ReminderHost:
 
                 #Add to the list of reminders for today
                 self.todaysReminders.append(reminder)
-        
-        #Generate all the mp3s in the queue
-        #engine.runAndWait()
-
-        #TODO: Launch Sound Player Script and establish link with reminderProcesses over shared memory
 
         #Sort by time
         self.todaysReminders.sort(key=lambda x: x["light-on"], reverse=False)
