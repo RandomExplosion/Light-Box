@@ -3,9 +3,9 @@
     "version": 0.1,
     "tts-lan": "en-au",
     "snooze-pin": 0,
-    "holiday-seasons":
+    "holiday-seasons": 
     [
-    
+
     ],
 
     "public-holidays":
@@ -35,6 +35,13 @@
                     "vocal-reminder": "Ben, Night Tablet",
                     "light-on": "19:20",
                     "grace-period": 5
+                },
+
+                {
+                    "label": "Test-B",
+                    "vocal-reminder": "Ben, Test Tablet",
+                    "light-on": "15:00",
+                    "grace-period": 5
                 }
             ],
 
@@ -50,7 +57,7 @@
                 {
                     "label": "H-Night-B",
                     "vocal-reminder": "Ben, Morning Tablet",
-                    "light-on": "19:20",
+                    "light-on": "15:20",
                     "grace-period": 5
                 }
             ],

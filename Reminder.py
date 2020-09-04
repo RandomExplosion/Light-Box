@@ -54,7 +54,7 @@ class Reminder:
         self.button = Button(data["pins"]["button"], hold_time=2)
 
         #Led and button events
-        self.button.when_released = self.released
+        self.button.when_released = self.dismiss
         #self.button.when_held = self.when_held
 
         #Sleep to ensure log order
